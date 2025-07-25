@@ -1,0 +1,65 @@
+asyncapi: 2.6.0
+info:
+  title: Event Configurator Webhook API
+  version: 1.0.0
+  description: |
+    Webhook API для отправки уведомлений подписчикам.
+    Описывает формат исходящих уведомлений через webhook.
+
+channels:
+  webhook/notifications:
+    publish:
+      summary: Отправка webhook-уведомлений подписчикам
+      operationId: sendWebhookNotification
+      message:
+        $ref: '#/components/messages/WebhookNotification'
+
+components:
+  messages:
+    WebhookNotification:
+      summary: Формат уведомления, отправляемого через webhook
+      payload:
+        type: object
+        required:
+          - eventType
+          - eventId
+          - timestamp
+          - source
+          - payload
+        properties:
+          eventType:
+            type: string
+            description: Тип события (например, USER_CREATED, ORDER_COMPLETED)
+            example: "USER_CREATED"
+          eventId:
+            type: string
+            format: uuid
+            description: Уникальный идентификатор события
+            example: "cb5e2daf-b2d9-4868-98c5-dc1c50f441e7"
+          timestamp:
+            type: string
+            format: date-time
+            description: Время генерации события
+            example: "2025-07-24T15:30:45Z"
+          source:
+            type: string
+            description: Источник события
+            example: "crm"
+          payload:
+            type: object
+            description: Данные события (зависят от типа события)
+            additionalProperties: true
+            example: {
+              "userId": "cb5e2daf-b2d9-4868-98c5-dc1c50f441e7",
+              "email": "user@example.com",
+              "name": "Иван Петров"
+            }
+
+  securitySchemes:
+    hmacSignature:
+      type: httpApiKey
+      name: X-Webhook-Signature
+      in: header
+      description: |
+        HMAC подпись для верификации подлинности webhook.
+        Вычисляется как HMAC-SHA256(secretKey, requestBody) и передается в заголовке.

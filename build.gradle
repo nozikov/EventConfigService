@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.4'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.openapi.generator' version '7.5.0'
+}
+
+group = 'com.flexmind'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // OpenAPI/Swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.6'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+    // Database
+    implementation 'com.h2database:h2'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+def OPENAPI_INPUT_SPEC = "${projectDir}/src/main/resources/event-config-openapi.yaml"
+def OPENAPI_OUTPUT_DIR = layout.buildDirectory.dir('generated').get().asFile.absolutePath
+def OPENAPI_API_PACKAGE = "com.flexmind.eventconfigservice.api"
+def OPENAPI_MODEL_PACKAGE = "com.flexmind.eventconfigservice.api.dto"
+def OPENAPI_CONFIG_OPTIONS = [
+        interfaceOnly       : "true",
+        useSpringBoot3      : "true",
+        useTags             : "true",
+        dateLibrary         : "java8",
+        openApiNullable     : "false",
+        skipDefaultInterface: "true",
+        useOptional         : "false",
+        gradleBuildFile     : "false"
+]
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = OPENAPI_INPUT_SPEC
+    outputDir = OPENAPI_OUTPUT_DIR
+    apiPackage = OPENAPI_API_PACKAGE
+    modelPackage = OPENAPI_MODEL_PACKAGE
+    configOptions = OPENAPI_CONFIG_OPTIONS
+}
+
+java.sourceSets.main.java.srcDirs += "${OPENAPI_OUTPUT_DIR}/src/main/java"
+java.sourceSets.main.resources.srcDirs += "${OPENAPI_OUTPUT_DIR}/src/main/resources"
+
+compileJava.dependsOn('openApiGenerate')
+processResources.dependsOn('openApiGenerate')
