@@ -1,4 +1,4 @@
-package com.flexmind.eventconfigservice.config;
+package com.flexmind.eventconfigservice.common.kafka.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;

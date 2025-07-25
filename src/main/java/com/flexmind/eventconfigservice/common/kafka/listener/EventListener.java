@@ -1,4 +1,4 @@
-package com.flexmind.eventconfigservice.listener;
+package com.flexmind.eventconfigservice.common.kafka.listener;
 
 import com.flexmind.eventconfigservice.model.Event;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.flexmind.eventconfigservice.config;
+package com.flexmind.eventconfigservice.common.vault.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

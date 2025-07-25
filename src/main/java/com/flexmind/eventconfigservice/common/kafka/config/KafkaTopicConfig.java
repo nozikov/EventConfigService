@@ -1,4 +1,4 @@
-package com.flexmind.eventconfigservice.config;
+package com.flexmind.eventconfigservice.common.kafka.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

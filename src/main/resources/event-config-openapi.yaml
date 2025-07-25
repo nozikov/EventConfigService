@@ -371,11 +371,8 @@ components:
     Error:
       type: object
       properties:
-        code:
+        applicationErrorCode:
           type: string
-          example: "BAD_REQUEST"
         message:
           type: string
-        details:
-          type: object
-          additionalProperties: true
+          description: Сообщение об ошибке

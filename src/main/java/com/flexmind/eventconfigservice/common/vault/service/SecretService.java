@@ -1,20 +1,17 @@
-package com.flexmind.eventconfigservice.service;
+package com.flexmind.eventconfigservice.common.vault.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class SecretService {
 
     private final Environment environment;
-
-    @Autowired
-    public SecretService(Environment environment) {
-        this.environment = environment;
-    }
 
     public String getSecret(String key) {
         try {
