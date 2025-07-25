@@ -138,7 +138,7 @@ graph TD
 
 - Описание API — в OpenAPI спецификации (`event-config-openapi.yaml`)
 - Событийная схема — в AsyncAPI (`event-webhook-asyncapi.yaml`)
-- Инструкции по запуску тестов и dev-окружения — в разделе [Development](#development)
+- Инструкции по запуску тестов — в разделе [Development](#development)
 
 ---
 

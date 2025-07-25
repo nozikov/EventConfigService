@@ -5,6 +5,10 @@ plugins {
     id 'org.openapi.generator' version '7.5.0'
 }
 
+ext {
+    set('springCloudVersion', "2023.0.0")
+}
+
 group = 'com.flexmind'
 version = '0.0.1-SNAPSHOT'
 
@@ -24,6 +28,12 @@ repositories {
     mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,7 +47,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
     // Database
-    implementation 'com.h2database:h2'
+    implementation 'org.postgresql:postgresql'
+    
+    // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+    
+    // Vault
+    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config'
+    implementation 'org.springframework.cloud:spring-cloud-vault-config-databases'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
